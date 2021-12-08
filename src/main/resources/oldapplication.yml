@@ -1,0 +1,44 @@
+server:
+  port: 8080
+
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://52.171.228.246:9999/eureka/
+
+spring:
+  application:
+      name: api-gateway
+  cloud:
+   config:
+       name: gateway
+       discovery:
+           service-id: config
+           enabled: true
+   gateway:
+    discovery:
+        locator:
+            enabled: true
+
+    routes:
+      - id: customer_microservice
+        uri: 'http://20.94.177.83:8081'
+        predicates:
+          - Path=/customer/**
+          - Query=src,mobile
+      - id: banckcredit_microservice
+        uri: lb://banckcredit-microservice
+        predicates:
+          - Path=/credit/**
+      - id: banckaccount_microservice
+        uri: lb://account-microservice
+        predicates:
+          - Path=/account/**
+      - id: movementaccount_microservice
+        uri: lb://movementaccount-microservice
+        predicates:
+          - Path=/account-movement/**
+      - id: movementcredit_microservice
+        uri: lb://movementcredit-microservice
+        predicates:
+          - Path=/credit-movement/**
