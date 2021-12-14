@@ -2,8 +2,21 @@ server:
   port: 8080
 
 spring:
+  profiles:
+    active: dev
   application:
     name: api-gateway
+
+---
+spring:
+  profiles: dev
+  cloud:
+    config:
+      enabled: true
+      uri: http://localhost:9998
+---
+spring:
+  profiles: qas
   cloud:
     config:
       enabled: true
